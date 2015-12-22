@@ -4,7 +4,7 @@ var restify = require('restify');
 var mongojs = require('mongojs');
 
 var ipAddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8880;
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://admin:password@localhost:27017/chat';
 
 var db = mongojs(dbUrl, ['messages']);
@@ -15,8 +15,8 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 server.pre(function forceHttps(req, res, next) {
-  if (ipAddress != '127.0.0.1' && req.headers['x-forwarded-proto'] == 'http') {
-      res.redirect('https://' + req.headers.host + req.url, next);
+  if (req.headers['x-forwarded-proto'] === 'http' && req.url !== '/') {
+      return next(new restify.BadRequestError('Use HTTPS protocol'));
   } else {
       return next();
   }
