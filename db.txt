@@ -1,0 +1,2 @@
+db.createCollection("messages");
+db.messages.createIndex({ location: "2dsphere" });
