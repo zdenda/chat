@@ -7,9 +7,9 @@ var EARTH_MEAN_RADIUS = 6371008.8;// m, https://en.wikipedia.org/wiki/Earth_radi
 
 var ipAddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://admin:password@localhost:27017/chat';
+var dbUrl = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://admin:password@localhost:27017/';
 
-var db = mongojs(dbUrl, ['messages']);
+var db = mongojs(dbUrl + 'chat', ['messages']);
 
 var server = restify.createServer();
 server.use(restify.acceptParser(server.acceptable));
