@@ -16,6 +16,11 @@ server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
+server.pre(function logRequest(req, res, next) {
+    console.log({ req: req }, 'REQUEST');
+    next();
+});
+
 server.pre(function forceHttps(req, res, next) {
   if (req.headers['x-forwarded-proto'] === 'http' && req.url !== '/') {
       return next(new restify.BadRequestError('Use HTTPS protocol'));
